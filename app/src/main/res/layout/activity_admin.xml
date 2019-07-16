@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".AdminActivity"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +23,8 @@
             android:text="Check"
             android:textSize="40dp"
             android:layout_weight="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            />
 
         <ImageView
             android:layout_width="0dp"
@@ -37,12 +38,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tv_thought"
+        <EditText
+            android:id="@+id/et_thought"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:hint="Enter your quote here"/>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,42 +53,19 @@
         android:layout_weight="1">
 
         <Spinner
-            android:id="@+id/spinner_location_user"
+            android:id="@+id/spinner_location_admin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_weight="1">
 
         </Spinner>
 
-        <ImageButton
-            android:id="@+id/imgbtn_settings"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/settings"
-            android:background="@null"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
         <Button
-            android:id="@+id/btn_nextsession"
+            android:id="@+id/btn_date_admin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Next Session" />
-
-        <Button
-            android:id="@+id/btn_date_user"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Choose date">
+            android:text="choose date">
 
         </Button>
 
@@ -103,12 +83,11 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/tv_team1"
+            <EditText
+                android:id="@+id/et_team1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Team1"
-                android:textColor="#000"/>
+                android:hint="Enter Team1"/>
 
         </LinearLayout>
 
@@ -122,16 +101,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Timing"
-                android:textColor="#000"/>
+                android:text="Timing"/>
 
-            <TextView
-                android:id="@+id/tv_timing1"
+            <Button
+                android:id="@+id/btn_timing1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="hh:mm"
-                android:textColor="#000"/>
+                android:text="choose Time"/>
 
         </LinearLayout>
 
@@ -144,16 +121,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Instructions"
-                android:textColor="#000"/>
+                android:text="Instructions"/>
 
-            <TextView
-                android:id="@+id/tv_instructions1"
+            <EditText
+                android:id="@+id/et_instructions1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="updating....."
-                android:textColor="#000"/>
+                android:hint="Enter instructions here"/>
 
         </LinearLayout>
 
@@ -170,12 +145,11 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/tv_team2"
+            <EditText
+                android:id="@+id/et_team2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Team2"
-                android:textColor="#000"/>
+                android:hint="Enter Team2"/>
 
         </LinearLayout>
 
@@ -189,39 +163,34 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Timing"
-                android:textColor="#000" />
+                android:text="Timing"/>
 
-            <TextView
-                android:id="@+id/tv_timing2"
+            <Button
+                android:id="@+id/btn_timing2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="hh:mm"
-                android:textColor="#000"/>
+                android:text="choose Time"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:textColor="#000">
+            android:layout_weight="2">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Instructions"
-                android:textColor="#000"/>
+                android:text="Instructions"/>
 
-            <TextView
-                android:id="@+id/tv_instructions2"
+            <EditText
+                android:id="@+id/et_instructions2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="updating....."
-                android:textColor="#000"/>
+                android:hint="Enter instructions here"/>
 
         </LinearLayout>
 
@@ -248,17 +217,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
-        <ImageView
+        <Button
+            android:id="@+id/btn_save"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="save"/>
 
     </LinearLayout>
-
 
 </LinearLayout>
