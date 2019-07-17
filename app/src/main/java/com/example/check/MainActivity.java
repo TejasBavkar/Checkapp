@@ -2,17 +2,17 @@ package com.example.check;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Member;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,AdapterView.OnItemSelectedListener {
 
@@ -104,12 +107,69 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         location_spinner.setSelection(0,true);
 
+        DatabaseReference db_thought = mDatabase.child("Thoughts").getRef();
+
+        //random thought display
+        db_thought.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int count = (int) dataSnapshot.getChildrenCount();
+                int random_index = (int) (Math.random() * count);
+                String thought = "";
+                int i = 0;
+                for(DataSnapshot datas: dataSnapshot.getChildren()){
+                    if(i==random_index){
+                        thought = (String) dataSnapshot.child(datas.getKey()).getValue();
+                    }
+                    i++;
+                }
+                mTv_thought.setText(thought);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //next session
+        mBtn_nextsession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String dateString = mBtn_date_user.getText().toString();
+                System.out.println("Date = "+ dateString);
+                Date dateObject = null;
+                try {
+                    dateObject = sdf.parse(dateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cal.setTime(dateObject);
+                cal.add(Calendar.DATE, 7);
+                System.out.println("Date = "+ cal.getTime());
+
+                String next_date = sdf.format(cal.getTime());
+
+                String loc = location_spinner.getSelectedItem().toString();
+
+                retrieveData(loc, next_date);
+
+            }
+        });
+
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int monthindex, int day) {
         mBtn_date_user.setText(day+"-"+(monthindex+1)+"-"+year);
-        retrieveData();
+
+        String loc = location_spinner.getSelectedItem().toString();
+        String date = mBtn_date_user.getText().toString();
+
+        retrieveData(loc, date);
     }
 
     @Override
@@ -123,14 +183,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    private void retrieveData(){
+    private void retrieveData(String loc, String date){
 
-        final String loc = location_spinner.getSelectedItem().toString();
-        String date = mBtn_date_user.getText().toString();
 
         final String t[] = new String[2];
 
         try{
+
             final DatabaseReference databs = mDatabase.child(loc).child(date);
             DatabaseReference db = databs.getRef();
 
@@ -201,4 +260,5 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
     }
+
 }

@@ -2,8 +2,10 @@ package com.example.check;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -36,6 +39,8 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
     private EditText mEt_instructions2;
 
     private Spinner location_spinner;
+
+    private ImageButton mImgbtn_settings_admin;
 
     private Button mBtn_save;
     private DatabaseReference mDatabase;
@@ -69,8 +74,18 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
 
         mBtn_save = (Button) findViewById(R.id.btn_save);
 
+        mImgbtn_settings_admin=(ImageButton)findViewById(R.id.imgbtn_settings_admin);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mImgbtn_settings_admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent admin_settings_intent = new Intent(AdminActivity.this, AdminSettingsActivity.class);
+                startActivity(admin_settings_intent);
+            }
+        });
 
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(AdminActivity.this, AdminActivity.this, 2010, 01, 01);
@@ -103,8 +118,7 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 addData();
                 //addquote
-                        
-
+                addThought();
             }
         });
 
@@ -124,7 +138,7 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month_index, int day) {
-        mBtn_date_admin.setText(day + "-" + (month_index+1) + "-" + year);
+        mBtn_date_admin.setText(String.format("%02d", day) + "-" + String.format("%02d", (month_index+1)) + "-" + year);
     }
 
     @Override
@@ -149,7 +163,17 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+    public  void addThought(){
+        String thoughtdata= mEt_thought.getText().toString();
+        try{
+            DatabaseReference db_thought = mDatabase.child("Thoughts");
+            db_thought.push().setValue(thoughtdata);
+        }
+        catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+        }
 
+    }
     public void addData() {
 
         String loc = location_spinner.getSelectedItem().toString();

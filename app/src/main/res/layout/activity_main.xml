@@ -39,8 +39,10 @@
 
         <TextView
             android:id="@+id/tv_thought"
+            android:text="thought"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:textColor="#000"/>
 
     </LinearLayout>
 
