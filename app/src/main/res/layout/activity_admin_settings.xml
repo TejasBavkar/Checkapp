@@ -7,6 +7,7 @@
     tools:context=".AdminSettingsActivity"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -43,7 +44,6 @@
                 android:id="@+id/spinner_location_admin_settings"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"></Spinner>
-
 
             <Button
                 android:id="@+id/btn_edit_location"
@@ -112,6 +112,21 @@
                 android:text="Delete thought"/>
 
         </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner_default_day"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"></Spinner>
 
     </LinearLayout>
 

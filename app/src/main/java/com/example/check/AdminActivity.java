@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Member;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AdminActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener, AdapterView.OnItemSelectedListener {
 
@@ -87,8 +89,15 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
             }
         });
 
+        Date newdate = new Date();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("MM");
+        SimpleDateFormat formatter3 = new SimpleDateFormat("yyyy");
+        String newday=formatter1.format(newdate);
+        String newmonth=formatter2.format(newdate);
+        String newyear=formatter3.format(newdate);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(AdminActivity.this, AdminActivity.this, Integer.parseInt(newyear), Integer.parseInt(newmonth)-1, Integer.parseInt(newday));
 
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(AdminActivity.this, AdminActivity.this, 2010, 01, 01);
         mBtn_date_admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

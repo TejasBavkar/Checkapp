@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private String TEAM2 = "Team2";
     private String INSTRUCTIONS2 = "Instructions2";
 
+    private int default_day_index = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        retrieveDefaultDay();
+
         mImgbtn_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +93,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
 
-        final DatePickerDialog datePickerDialog=new DatePickerDialog(MainActivity.this,MainActivity.this,2010,01,01);
+        Date newdate = new Date();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("MM");
+        SimpleDateFormat formatter3 = new SimpleDateFormat("yyyy");
+        String newday=formatter1.format(newdate),newmonth=formatter2.format(newdate),newyear=formatter3.format(newdate);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, MainActivity.this, Integer.parseInt(newyear), Integer.parseInt(newmonth)-1, Integer.parseInt(newday));
         mBtn_date_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +146,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mBtn_nextsession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                String stateCodeArr[] = getResources().getStringArray(R.array.array_statecodes);
+//
+//                statecode = String.valueOf(stateCodeArr[i]);
+
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 String dateString = mBtn_date_user.getText().toString();
@@ -164,7 +178,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int monthindex, int day) {
-        mBtn_date_user.setText(day+"-"+(monthindex+1)+"-"+year);
+
+        mBtn_date_user.setText(String.format("%02d", day) + "-" + String.format("%02d", (monthindex+1)) + "-" + year);
 
         String loc = location_spinner.getSelectedItem().toString();
         String date = mBtn_date_user.getText().toString();
@@ -258,6 +273,36 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void retrieveDefaultDay(){
+
+        try{
+            mDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    String i = dataSnapshot.child(AdminSettingsActivity.DEFAULT_DAY).getValue(String.class);
+
+                    //System.out.println("abd"+i);
+
+                    default_day_index = Integer.parseInt(i);
+
+                    Toast.makeText(getApplicationContext(), "no error in default day", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "error in default day", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
