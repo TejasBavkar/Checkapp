@@ -59,6 +59,12 @@
 
         </Spinner>
 
+        <TextView
+            android:id="@+id/tv_defaultday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
         <ImageButton
             android:id="@+id/imgbtn_settings"
             android:layout_width="0dp"
@@ -68,6 +74,8 @@
             android:background="@null"
             />
 
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -75,11 +83,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_nextsession"
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_nextsession"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="20sp"
+            android:textColor="#000"
             android:text="Next Session" />
 
         <Button

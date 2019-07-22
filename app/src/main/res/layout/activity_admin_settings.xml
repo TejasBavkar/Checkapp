@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"></Spinner>
 
+
             <Button
                 android:id="@+id/btn_edit_location"
                 android:layout_width="match_parent"
@@ -127,6 +128,7 @@
             android:id="@+id/spinner_default_day"
             android:layout_width="match_parent"
             android:layout_height="50dp"></Spinner>
+
 
     </LinearLayout>
 

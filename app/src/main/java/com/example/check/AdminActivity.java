@@ -28,7 +28,6 @@ import java.util.Date;
 
 public class AdminActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener , TimePickerDialog.OnTimeSetListener, AdapterView.OnItemSelectedListener {
 
-    private EditText mEt_thought;
     private Button mBtn_date_admin;
     private String location = "Thane";
 
@@ -64,8 +63,6 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
-        mEt_thought = (EditText) findViewById(R.id.et_thought);
         mBtn_date_admin = (Button) findViewById(R.id.btn_date_admin);
         mEt_team1 = (EditText) findViewById(R.id.et_team1);
         mBtn_timing1 = (Button) findViewById(R.id.btn_timing1);
@@ -127,7 +124,7 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 addData();
                 //addquote
-                addThought();
+                //addThought();
             }
         });
 
@@ -154,9 +151,9 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
     public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
 
         if(btn_timing1 == true){
-            mBtn_timing1.setText(hour + ":" + minutes);
+            mBtn_timing1.setText(String.format("%02d", hour) + ":" + String.format("%02d", minutes));
         }else if(btn_timing2 == true){
-            mBtn_timing2.setText(hour + ":" + minutes);
+            mBtn_timing2.setText(String.format("%02d", hour) + ":" + String.format("%02d", minutes));
         }else{
 
         }
@@ -172,17 +169,17 @@ public class AdminActivity extends AppCompatActivity implements DatePickerDialog
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    public  void addThought(){
-        String thoughtdata= mEt_thought.getText().toString();
-        try{
-            DatabaseReference db_thought = mDatabase.child("Thoughts");
-            db_thought.push().setValue(thoughtdata);
-        }
-        catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//    public  void addThought(){
+//        String thoughtdata= mEt_thought.getText().toString();
+//        try{
+//            DatabaseReference db_thought = mDatabase.child("Thoughts");
+//            db_thought.push().setValue(thoughtdata);
+//        }
+//        catch (Exception e){
+//            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
     public void addData() {
 
         String loc = location_spinner.getSelectedItem().toString();

@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class AdminSettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -42,7 +43,7 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
 
     public static String THOUGHTS = "Thoughts";
 
-    private ArrayList<String> location_array;
+    private List<String> location_array;
 
     private ArrayAdapter<String> adapter2;
 
@@ -65,6 +66,11 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
         mbtn_add_thought = (Button) findViewById(R.id.btn_add_thought);
         mbtn_delete_location = (Button) findViewById(R.id.btn_delete_thought);
 
+
+
+
+
+
         mDefaultday_spinner = (Spinner) findViewById(R.id.spinner_default_day);
 
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Arrays.asList(new String[]{"Sunday", "Monday"}));
@@ -78,11 +84,21 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+
+
+
+
+
+
+
         mSpinner_location_admin_settings = (Spinner) findViewById(R.id.spinner_location_admin_settings);
 
-        location_array = new ArrayList<>();
+        location_array = new ArrayList<String>();
 
         updateLocationArray();
+
+        System.out.println("tej"+location_array);
 
         //location_array = new ArrayList<String>(Arrays.asList(new String[]{"Thane", "Pune", "Andheri", "Bangalore", "Amsterdam"}));
 
@@ -95,6 +111,7 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("devang"+i);
+                Toast.makeText(AdminSettingsActivity.this, "this is test", Toast.LENGTH_SHORT).show();
                 String old_loc = location_array.get(i);
                 mEt_add_edit_location.setText(old_loc);
             }
@@ -104,6 +121,17 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
 
             }
         });
+
+
+
+
+
+
+
+
+
+
+
 
         //thought spinner
         mSpinner_thought_admin_settings = (Spinner) findViewById(R.id.spinner_thought_admin_settings);
@@ -193,14 +221,21 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
     private void updateLocationArray(){
         DatabaseReference db_loc = mDatabase.child(LOCATION).getRef();
 
+
         db_loc.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 location_array.clear();
+//                ArrayList<String> list;
+//
+//                list = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String loc = snapshot.getValue(String.class);
                     location_array.add(loc);
                 }
+
+                //adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, location_array);
+
             }
 
             @Override
@@ -235,11 +270,10 @@ public class AdminSettingsActivity extends AppCompatActivity implements AdapterV
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //String daysArr[] = getResources().getStringArray(R.array.days_array);
-        //String default_day = String.valueOf(daysArr[i]);
+        String daysArr[] = getResources().getStringArray(R.array.days_array);
+        String default_day = String.valueOf(daysArr[i]);
 
         mDatabase.child(DEFAULT_DAY).setValue(String.valueOf(i));
-
 
     }
 

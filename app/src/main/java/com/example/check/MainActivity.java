@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private DatabaseReference mDatabase;
 
     private TextView mTv_thought;
-    private Button mBtn_nextsession;
     private Button mBtn_date_user;
     private TextView mTv_team1;
     private TextView mTv_timing1;
@@ -61,14 +60,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     private int default_day_index = 0;
 
+    private TextView mTv_defaultday;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTv_thought=(TextView)findViewById(R.id.tv_thought);
-
-        mBtn_nextsession=(Button) findViewById(R.id.btn_nextsession);
 
         mBtn_date_user=(Button) findViewById(R.id.btn_date_user);
 
@@ -78,12 +77,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mTv_team2=(TextView)findViewById(R.id.tv_team2);
         mTv_timing2=(TextView)findViewById(R.id.tv_timing2);
         mTv_instructions2=(TextView)findViewById(R.id.tv_instructions2);
+        mTv_defaultday = (TextView) findViewById(R.id.tv_defaultday);
 
         mImgbtn_settings=(ImageButton)findViewById(R.id.imgbtn_settings);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         retrieveDefaultDay();
+        System.out.println("tej1="+default_day_index);
 
         mImgbtn_settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,36 +144,43 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         });
 
         //next session
-        mBtn_nextsession.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-//                String stateCodeArr[] = getResources().getStringArray(R.array.array_statecodes);
+        //default_day_index = Integer.parseInt(mTv_defaultday.getText().toString());
+
+        System.out.println("tej2="+default_day_index);
+
+        //nextSession();
+
+//        mBtn_nextsession.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //
-//                statecode = String.valueOf(stateCodeArr[i]);
-
-                Calendar cal = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                String dateString = mBtn_date_user.getText().toString();
-                System.out.println("Date = "+ dateString);
-                Date dateObject = null;
-                try {
-                    dateObject = sdf.parse(dateString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                cal.setTime(dateObject);
-                cal.add(Calendar.DATE, 7);
-                System.out.println("Date = "+ cal.getTime());
-
-                String next_date = sdf.format(cal.getTime());
-
-                String loc = location_spinner.getSelectedItem().toString();
-
-                retrieveData(loc, next_date);
-
-            }
-        });
+////                String stateCodeArr[] = getResources().getStringArray(R.array.array_statecodes);
+////
+////                statecode = String.valueOf(stateCodeArr[i]);
+//
+//                Calendar cal = Calendar.getInstance();
+//                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//                String dateString = mBtn_date_user.getText().toString();
+//                System.out.println("Date = "+ dateString);
+//                Date dateObject = null;
+//                try {
+//                    dateObject = sdf.parse(dateString);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                cal.setTime(dateObject);
+//                cal.add(Calendar.DATE, 7);
+//                System.out.println("Date = "+ cal.getTime());
+//
+//                String next_date = sdf.format(cal.getTime());
+//
+//                String loc = location_spinner.getSelectedItem().toString();
+//
+//                retrieveData(loc, next_date);
+//
+//            }
+//        });
 
     }
 
@@ -287,7 +295,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                     //System.out.println("abd"+i);
 
-                    default_day_index = Integer.parseInt(i);
+                    //default_day_index = Integer.parseInt(i);
+
+                    mTv_defaultday.setText(i);
 
                     Toast.makeText(getApplicationContext(), "no error in default day", Toast.LENGTH_SHORT).show();
 
@@ -299,10 +309,45 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                 }
             });
+
+
+
+            System.out.println("tej3="+default_day_index);
+
+
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "error in default day", Toast.LENGTH_SHORT).show();
         }
 
+
+    }
+
+    private void nextSession(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int today_index = calendar.get(Calendar.DAY_OF_WEEK);
+
+        int add_index = (default_day_index + (7 - today_index))%7;
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        //String dateString = mBtn_date_user.getText().toString();
+        //System.out.println("Date = "+ dateString);
+        //Date dateObject = null;
+//        try {
+//            dateObject = sdf.parse(dateString);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, add_index);
+        System.out.println("Date = "+ cal.getTime());
+
+        String next_date = sdf.format(cal.getTime());
+
+        String loc = location_spinner.getSelectedItem().toString();
+
+        retrieveData(loc, next_date);
 
     }
 
